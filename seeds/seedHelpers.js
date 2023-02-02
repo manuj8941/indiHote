@@ -1,0 +1,3 @@
+module.exports.descriptors = [ "Enchanting", "Serene", "Exuberant", "Magnificent", "Tranquil", "Splendid", "Grandiose", "Glittering", "Idyllic", "Exquisite", "Glamorous", "Opulent", "Lavish", "Grand", "Luxurious", "Magnificent", "Stunning", "Glittering", "Posh", "Heritage", "Exotic" ];
+
+module.exports.places = [ "Palace", "Mansion", "Lodge", "Retreat", "Inn", "Manor", "Villa", "Resort", "Spa", "Club", "Tower", "Grand", "Ritz", "Plaza", "Savoy", "Regency", "Majestic", "Ambassador", "Imperial", "Sheraton", "Park", "Marriott", "Crown", "Hyatt", "Hilton", "Leela", "Oberoi", "Trident", "Taj", "Intercontinental", "Radisson" ];

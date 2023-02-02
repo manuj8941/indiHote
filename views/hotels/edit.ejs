@@ -1,0 +1,55 @@
+<% layout("layouts/boilerplate.ejs")  %>
+
+<div class="row">
+    <h1 class="text-center">Edit Hotel</h1>
+    <div class="col-6 offset-3">
+        <form action="/hotels/<%= hotel._id %>/edit" method="post" novalidate class="needs-validation" required>
+
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" name="title" id="title" value="<%= hotel.title %>" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" name="location" id="location" value="<%= hotel.location %>"
+                    required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="imageURL">Image URL</label>
+                <input class="form-control" type="text" name="imageURL" id="imageURL" value="<%= hotel.imageURL %>"
+                    required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="price">Hotel Price</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="price-label">₹</span>
+                    <input class="form-control" type="number" name="price" id="price" value="<%= hotel.price %>"
+                        required>
+                </div>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" name="description" id="description"
+                    rows="5"><%= hotel.description %></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class=" mb-3">
+                <button class="btn btn-info">Update Hotel</button>
+            </div>
+        </form>
+
+        <footer>
+            <a class="btn btn-outline-dark btn-lg col-8 offset-2" href="/hotels/<%= hotel._id %> ">🔙 Back To Hotel Without Updating</a>
+        </footer>
+    </div>
+
+</div>
