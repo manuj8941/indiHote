@@ -8,7 +8,7 @@ const path = require( "path" );
 app.set( "views", path.join( __dirname, "views" ) );
 app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
-
+let loginFlag = false;
 
 const mongoose = require( "mongoose" );
 mongoose.set( "strictQuery", false );
@@ -27,8 +27,30 @@ const Hotel = require( "./models/hotel.js" );
 
 app.get( "/", ( req, res ) =>
 {
-    res.redirect( "/hotels" );
+    res.redirect("/hotels")
+
 } );
+
+app.post( "/", ( req, res ) =>
+{
+    const providedPW = req.body.providedPW;
+    if ( providedPW === "indiaisgreat" )
+    {
+        loginFlag = true;
+        
+        console.log(loginFlag);
+        res.redirect( "/hotels" );
+    } else{
+        res.send( "Invalid Password" );
+        
+    }
+
+} );
+
+
+
+
+
 
 
 app.get( "/hotels", ( req, res ) =>
@@ -48,6 +70,8 @@ app.get( "/hotels/new", ( req, res ) =>
     res.render( "hotels/new.ejs" );
 
 } );
+
+
 
 app.post( "/hotels/new", ( req, res ) =>
 {
