@@ -1,12 +1,12 @@
 const express = require( "express" );
 const app = express();
-app.use( express.static( "public" ) );
+app.use( express.static( __dirname ) );
 app.use( express.urlencoded( { extended: true } ) );
 app.use( express.json() );
 const ejs = require( "ejs" );
 const ejsMate = require( "ejs-mate" );
 const path = require( "path" );
-app.set( "views", path.join( __dirname, "public" ) );
+app.set( "views", __dirname );
 app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
 
@@ -14,7 +14,7 @@ app.engine( "ejs", ejsMate );
 
 let loginFlag = false;
 const appPassword = "india";
-let loginRequestType = "";
+let loginRequestType = ""; 
 let currHotelID;
 
 
