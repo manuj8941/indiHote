@@ -1,5 +1,6 @@
 const express = require( "express" );
 const app = express();
+app.use( express.static( "public" ) );
 app.use( express.urlencoded( { extended: true } ) );
 app.use( express.json() );
 const ejs = require( "ejs" );
@@ -8,69 +9,91 @@ const path = require( "path" );
 app.set( "views", path.join( __dirname, "views" ) );
 app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
+
+
+
 let loginFlag = false;
+const appPassword = "india";
+let loginRequestType = "";
+let currHotelID;
+
 
 const mongoose = require( "mongoose" );
 mongoose.set( "strictQuery", false );
-mongoose.connect( "mongodb://localhost:27017/indiHoteDB" )
+mongoose.connect( "mongodb://0.0.0.0:27017/indiHoteDB" )
     .then( ( response ) =>
     {
         console.log( `Connected to MongoDB with response: ${ response }` );
-
     } )
     .catch( ( error ) =>
     {
         console.log( `Oh No MongoDB Connection Error: ${ error }` );
     } );
+const { ObjectID } = require( 'mongodb' );
 const Hotel = require( "./models/hotel.js" );
 
 
 app.get( "/", ( req, res ) =>
 {
-    res.redirect("/hotels")
+    res.redirect( "/hotels" );
 
 } );
-
-app.post( "/", ( req, res ) =>
-{
-    const providedPW = req.body.providedPW;
-    if ( providedPW === "indiaisgreat" )
-    {
-        loginFlag = true;
-        
-        console.log(loginFlag);
-        res.redirect( "/hotels" );
-    } else{
-        res.send( "Invalid Password" );
-        
-    }
-
-} );
-
-
-
-
 
 
 
 app.get( "/hotels", ( req, res ) =>
 {
-
     Hotel.find()
         .then( ( hotels ) =>
         {
             res.render( "hotels/index.ejs", { hotels } );
 
         } );
-
 } );
+
 
 app.get( "/hotels/new", ( req, res ) =>
 {
-    res.render( "hotels/new.ejs" );
-
+    loginRequestType = "ADD";
+    if ( loginFlag === true )
+    {
+        res.render( "hotels/new.ejs" );
+    } else
+    {
+        res.render( "hotels/login.ejs", { msg: "" } );
+    }
 } );
 
+app.post( "/hotels/login", ( req, res ) =>
+{
+    let providedPW = req.body.password;
+    if ( providedPW === appPassword )
+    {
+        loginFlag = true;
+        if ( loginRequestType === "ADD" )
+        {
+            res.render( "hotels/new.ejs" );
+        } else if ( loginRequestType === "EDIT" )
+        {
+            Hotel.findById( currHotelID )
+                .then( ( hotel ) =>
+                {
+                    res.render( "hotels/edit.ejs", { hotel } );
+                } );
+
+        } else if ( loginRequestType === "DELETE" )
+        {
+            Hotel.findByIdAndDelete( currHotelID )
+                .then( ( hotel ) =>
+                {
+                    res.redirect( "/hotels" );
+                } );
+        }
+    } else
+    {
+        res.render( "hotels/login.ejs", { msg: "not a valid password" } );
+    }
+} );
 
 
 app.post( "/hotels/new", ( req, res ) =>
@@ -86,34 +109,37 @@ app.post( "/hotels/new", ( req, res ) =>
         {
             res.redirect( `/hotels/${ hotel._id }` );
         } );
-
 } );
 
 
 app.get( "/hotels/:id", ( req, res ) =>
 {
-
-
     Hotel.findById( req.params.id )
         .then( ( hotel ) =>
         {
             res.render( "hotels/show.ejs", { hotel } );
         } );
-
-
-
 } );
 
 app.get( "/hotels/:id/edit", ( req, res ) =>
 {
-    const id = req.params.id;
-    Hotel.findById( id )
-        .then( ( hotel ) =>
-        {
-            res.render( "hotels/edit.ejs", { hotel } );
+    loginRequestType = "EDIT";
+    currHotelID = req.params.id;
 
-        } );
+    if ( loginFlag === true )
+    {
+        const id = req.params.id;
+        Hotel.findById( id )
+            .then( ( hotel ) =>
+            {
+                res.render( "hotels/edit.ejs", { hotel } );
+            } );
+    } else
+    {
+        res.render( "hotels/login.ejs", { msg: "" } );
+    }
 } );
+
 
 app.post( "/hotels/:id/edit", ( req, res ) =>
 {
@@ -124,7 +150,6 @@ app.post( "/hotels/:id/edit", ( req, res ) =>
     const description = req.body.description;
     const imageURL = String( req.body.imageURL );
 
-
     Hotel.findByIdAndUpdate( id, { title, location, price, description, imageURL }, { new: true } )
         .then( ( hotel ) =>
         {
@@ -134,12 +159,20 @@ app.post( "/hotels/:id/edit", ( req, res ) =>
 
 app.get( "/hotels/:id/delete", ( req, res ) =>
 {
-    const id = req.params.id;
-    Hotel.findByIdAndDelete( id )
-        .then( ( hotel ) =>
-        {
-            res.redirect( "/hotels" );
-        } );
+    loginRequestType = "DELETE";
+    currHotelID = req.params.id;
+    if ( loginFlag === true )
+    {
+        const id = req.params.id;
+        Hotel.findByIdAndDelete( id )
+            .then( ( hotel ) =>
+            {
+                res.redirect( "/hotels" );
+            } );
+    } else
+    {
+        res.render( "hotels/login.ejs", { msg: "" } );
+    }
 } );
 
 
