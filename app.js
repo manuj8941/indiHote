@@ -6,7 +6,7 @@ app.use( express.json() );
 const ejs = require( "ejs" );
 const ejsMate = require( "ejs-mate" );
 const path = require( "path" );
-app.set( "views", path.join( __dirname, "views" ) );
+app.set( "views", path.join( __dirname, "public" ) );
 app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
 
@@ -23,14 +23,15 @@ mongoose.set( "strictQuery", false );
 mongoose.connect( "mongodb://0.0.0.0:27017/indiHoteDB" )
     .then( ( response ) =>
     {
-        console.log( `Connected to MongoDB with response: ${ response }` );
+        console.log( `Connected to MongoDB` );
+
     } )
     .catch( ( error ) =>
     {
         console.log( `Oh No MongoDB Connection Error: ${ error }` );
     } );
-const { ObjectID } = require( 'mongodb' );
-const Hotel = require( "./models/hotel.js" );
+
+const Hotel = require( "./hotel.js" );
 
 
 app.get( "/", ( req, res ) =>
@@ -46,8 +47,7 @@ app.get( "/hotels", ( req, res ) =>
     Hotel.find()
         .then( ( hotels ) =>
         {
-            res.render( "hotels/index.ejs", { hotels } );
-
+            res.render( "index.ejs", { hotels } );
         } );
 } );
 
@@ -57,10 +57,10 @@ app.get( "/hotels/new", ( req, res ) =>
     loginRequestType = "ADD";
     if ( loginFlag === true )
     {
-        res.render( "hotels/new.ejs" );
+        res.render( "new.ejs" );
     } else
     {
-        res.render( "hotels/login.ejs", { msg: "" } );
+        res.render( "login.ejs", { msg: "" } );
     }
 } );
 
@@ -72,13 +72,13 @@ app.post( "/hotels/login", ( req, res ) =>
         loginFlag = true;
         if ( loginRequestType === "ADD" )
         {
-            res.render( "hotels/new.ejs" );
+            res.render( "new.ejs" );
         } else if ( loginRequestType === "EDIT" )
         {
             Hotel.findById( currHotelID )
                 .then( ( hotel ) =>
                 {
-                    res.render( "hotels/edit.ejs", { hotel } );
+                    res.render( "edit.ejs", { hotel } );
                 } );
 
         } else if ( loginRequestType === "DELETE" )
@@ -91,7 +91,7 @@ app.post( "/hotels/login", ( req, res ) =>
         }
     } else
     {
-        res.render( "hotels/login.ejs", { msg: "not a valid password" } );
+        res.render( "login.ejs", { msg: "not a valid password" } );
     }
 } );
 
@@ -117,7 +117,7 @@ app.get( "/hotels/:id", ( req, res ) =>
     Hotel.findById( req.params.id )
         .then( ( hotel ) =>
         {
-            res.render( "hotels/show.ejs", { hotel } );
+            res.render( "show.ejs", { hotel } );
         } );
 } );
 
@@ -132,11 +132,11 @@ app.get( "/hotels/:id/edit", ( req, res ) =>
         Hotel.findById( id )
             .then( ( hotel ) =>
             {
-                res.render( "hotels/edit.ejs", { hotel } );
+                res.render( "edit.ejs", { hotel } );
             } );
     } else
     {
-        res.render( "hotels/login.ejs", { msg: "" } );
+        res.render( "login.ejs", { msg: "" } );
     }
 } );
 
@@ -171,7 +171,7 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
             } );
     } else
     {
-        res.render( "hotels/login.ejs", { msg: "" } );
+        res.render( "login.ejs", { msg: "" } );
     }
 } );
 

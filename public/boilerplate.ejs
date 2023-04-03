@@ -9,18 +9,56 @@
             integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 
         <title>indiHote</title>
+        <style>
+            img {
+                transition: transform 0.3s ease;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                border: 2px solid #141414;
+                border-radius: 8px;
+
+            }
+
+
+            img:hover {
+
+                transform: scale(1.1);
+                border-color: #8a1313;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
+            }
+        </style>
     </head>
 
     <body class="d-flex flex-column vh-100">
 
-        <%- include("../partials/navbar.ejs") %>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">indiHote</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/hotels">Hotels</a>
+                        <a class="nav-link" href="/hotels/new">New Hotel</a>
 
+                    </div>
+                </div>
+            </div>
+        </nav>
 
         <main class="container mt-5">
             <%- body  %>
         </main>
 
-        <%- include("../partials/footer.ejs") %>
+        <footer class="footer bg-dark py-3 mt-auto">
+            <div class="container">
+                <span class="text-muted">©️ indiHote 2023</span>
+            </div>
+        </footer>
 
 
 
