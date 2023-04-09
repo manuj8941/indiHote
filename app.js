@@ -1,3 +1,8 @@
+const hostPort = process.env.PORT || 3000;
+const mongoKey = require( "./mongoKey.js" );
+const appPassword = require("./appPassword.js")
+const mongoHostString = `mongodb+srv://manuj8941:${ mongoKey }@joltlink.cjl86ox.mongodb.net/indiHoteDB?retryWrites=true&w=majority`;
+
 const express = require( "express" );
 const app = express();
 app.use( express.static( __dirname ) );
@@ -11,24 +16,48 @@ app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
 
 
+// //
+// const multer = require( "multer" );
+
+// // Set up multer middleware to store uploaded files in the "uploads" directory
+// const storage = multer.diskStorage( {
+//     destination: function ( req, file, cb )
+//     {
+//         cb( null, "uploads/" );
+//     },
+//     filename: function ( req, file, cb )
+//     {
+//         cb( null, file.originalname );
+//     }
+// } );
+// const upload = multer( { storage: storage } );
+
+// //
+
+
 
 let loginFlag = false;
-const appPassword = "india";
-let loginRequestType = ""; 
+
+let loginRequestType = "";
 let currHotelID;
 
+setInterval( () =>
+{
+    loginFlag = false;
+    console.log( "loginFlag has been reset to false." );
+}, 5 * 60 * 1000 );
 
 const mongoose = require( "mongoose" );
 mongoose.set( "strictQuery", false );
-mongoose.connect( "mongodb://0.0.0.0:27017/indiHoteDB" )
+mongoose.connect( mongoHostString )
     .then( ( response ) =>
     {
-        console.log( `Connected to MongoDB` );
+        console.log( `Connected to MongoDB Atlas` );
 
     } )
     .catch( ( error ) =>
     {
-        console.log( `Oh No MongoDB Connection Error: ${ error }` );
+        console.log( `Oh No MongoDB Atlas Connection Error: ${ error }` );
     } );
 
 const Hotel = require( "./hotel.js" );
@@ -175,8 +204,44 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
     }
 } );
 
+// app.get( "/check", ( req, res ) =>
+// {
+//     res.render( "check.ejs" );
+// } );
 
-app.listen( 3000, () =>
+// app.post( "/check", upload.single( "image" ), ( req, res ) =>
+// {
+//     const title = req.body.title;
+//     const price = req.body.price;
+//     const description = req.body.description;
+//     const location = req.body.location;
+//     // const imageURL = req.body.imageURL;
+//     const imageURL =  req.file.path; 
+
+//     const hotel = new Hotel( {
+//         title: title,
+//         price: price,
+//         description: description,
+//         location: location,
+//         imageURL: imageURL
+//     } );
+
+//     hotel.save( ( err ) =>
+//     {
+//         if ( err )
+//         {
+//             console.error( err );
+//             res.send( "An error occurred while saving the hotel information." );
+//         } else
+//         {
+//             res.send( "Hotel information saved successfully." );
+//         }
+//     } );
+// } );
+
+
+
+app.listen( hostPort, () =>
 {
     console.log( "listenig to port 3000!!" );;
 

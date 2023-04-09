@@ -1,8 +1,5 @@
-Login in edit also
-Timer of relogin
-Seed images static
 images should be uploaded from local and saved locally, path saved in mongo
-API check
+
 login page footer
 if login show userShot in top
 

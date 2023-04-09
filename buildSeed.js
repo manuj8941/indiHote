@@ -1,14 +1,18 @@
+const mongoKey = require( "./mongoKey.js" );
+const mongoHostString = `mongodb+srv://manuj8941:${ mongoKey }@joltlink.cjl86ox.mongodb.net/indiHoteDB?retryWrites=true&w=majority`;
+
+
 const mongoose = require( "mongoose" );
 mongoose.set( "strictQuery", false );
-mongoose.connect( "mongodb://0.0.0.0:27017/indiHoteDB" )
+mongoose.connect( mongoHostString )
     .then( ( response ) =>
     {
-        console.log( `Connected to MongoDB with response: ${ response }` );
+        console.log( `Connected to MongoDB Atlas with response: ${ response }` );
 
     } )
     .catch( ( error ) =>
     {
-        console.log( `Oh No MongoDB Connection Error: ${ error }` );
+        console.log( `Oh No MongoDB Atlas Connection Error: ${ error }` );
     } );
 
 const Hotel = require( "./hotel.js" );
