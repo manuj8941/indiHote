@@ -1,6 +1,6 @@
 const hostPort = process.env.PORT || 3000;
 const mongoKey = require( "./mongoKey.js" );
-const appPassword = require("./appPassword.js")
+const appPassword = require( "./appPassword.js" );
 const mongoHostString = `mongodb+srv://manuj8941:${ mongoKey }@joltlink.cjl86ox.mongodb.net/indiHoteDB?retryWrites=true&w=majority`;
 
 const express = require( "express" );
@@ -243,6 +243,6 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
 
 app.listen( hostPort, () =>
 {
-    console.log( "listenig to port 3000!!" );;
+    console.log( `SERVER STARTED ON ${ hostPort }` );
 
 } );
