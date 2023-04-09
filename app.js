@@ -69,6 +69,22 @@ app.get( "/", ( req, res ) =>
 
 } );
 
+app.get( "/hotel", ( req, res ) =>
+{
+    res.redirect( "/hotels" );
+
+} );
+
+app.get( "/login", ( req, res ) =>
+{
+    res.redirect( "/hotels/login" );
+
+} );
+
+app.get( "/hotels/login", ( req, res ) =>
+{
+    res.render( "login.ejs", { msg: "" } );
+} );
 
 
 app.get( "/hotels", ( req, res ) =>
@@ -89,7 +105,7 @@ app.get( "/hotels/new", ( req, res ) =>
         res.render( "new.ejs" );
     } else
     {
-        res.render( "login.ejs", { msg: "" } );
+        res.redirect( "/hotels/login" );
     }
 } );
 
@@ -101,7 +117,7 @@ app.post( "/hotels/login", ( req, res ) =>
         loginFlag = true;
         if ( loginRequestType === "ADD" )
         {
-            res.render( "new.ejs" );
+            res.redirect( "/hotels/new" );
         } else if ( loginRequestType === "EDIT" )
         {
             Hotel.findById( currHotelID )
@@ -165,7 +181,7 @@ app.get( "/hotels/:id/edit", ( req, res ) =>
             } );
     } else
     {
-        res.render( "login.ejs", { msg: "" } );
+        res.redirect( "/hotels/login" );
     }
 } );
 
@@ -200,7 +216,7 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
             } );
     } else
     {
-        res.render( "login.ejs", { msg: "" } );
+        res.redirect( "/login" );
     }
 } );
 
@@ -239,7 +255,10 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
 //     } );
 // } );
 
-
+app.use( ( req, res, next ) =>
+{
+    res.status( 404 ).render( "404.ejs", { invalidURL: req.url } );
+} );
 
 app.listen( hostPort, () =>
 {

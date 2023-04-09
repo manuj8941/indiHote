@@ -21,7 +21,7 @@
             <div class="mb-3">
                 <label class="form-label" for="imageURL">Image URL</label>
                 <input class="form-control" type="text" name="imageURL" id="imageURL" value="<%= hotel.imageURL %>"
-                    required>
+                required pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)" title="Please enter a valid image URL">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
@@ -38,7 +38,7 @@
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" type="text" name="description" id="description"
-                    rows="5"><%= hotel.description %></textarea>
+                    rows="5" required><%= hotel.description %></textarea>
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
