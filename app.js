@@ -1,6 +1,41 @@
 const hostPort = process.env.PORT || 3000;
-const mongoKey = require( "./mongoKey.js" );
-const appPassword = require( "./appPassword.js" );
+let mongoKey;
+
+try
+{
+    mongoKey = require( "./mongoKey.js" );
+} catch ( error )
+{
+    if ( typeof mongoKeyEnv !== 'undefined' )
+    {
+        mongoKey = mongoKeyEnv;
+    } else
+    {
+        mongoKey = process.env.mongoKeyEnv;
+    }
+}
+// const mongoKey = require( "./mongoKey.js" );
+
+let appPassword;
+try
+{
+    appPassword = require( "./appPassword.js" );
+} catch ( error )
+{
+    if ( typeof appPasswordEnv !== 'undefined' )
+    {
+        appPassword = appPasswordEnv;
+    } else
+    {
+        appPassword = process.env.appPasswordEnv;
+    }
+}
+
+// const appPassword = require( "./appPassword.js" );
+
+
+
+
 const mongoHostString = `mongodb+srv://manuj8941:${ mongoKey }@joltlink.cjl86ox.mongodb.net/indiHoteDB?retryWrites=true&w=majority`;
 
 const express = require( "express" );
@@ -14,27 +49,6 @@ const path = require( "path" );
 app.set( "views", __dirname );
 app.set( "view engine", "ejs" );
 app.engine( "ejs", ejsMate );
-
-
-// //
-// const multer = require( "multer" );
-
-// // Set up multer middleware to store uploaded files in the "uploads" directory
-// const storage = multer.diskStorage( {
-//     destination: function ( req, file, cb )
-//     {
-//         cb( null, "uploads/" );
-//     },
-//     filename: function ( req, file, cb )
-//     {
-//         cb( null, file.originalname );
-//     }
-// } );
-// const upload = multer( { storage: storage } );
-
-// //
-
-
 
 let loginFlag = false;
 
@@ -95,7 +109,6 @@ app.get( "/hotels", ( req, res ) =>
             res.render( "index.ejs", { hotels } );
         } );
 } );
-
 
 app.get( "/hotels/new", ( req, res ) =>
 {
@@ -220,40 +233,70 @@ app.get( "/hotels/:id/delete", ( req, res ) =>
     }
 } );
 
-// app.get( "/check", ( req, res ) =>
-// {
-//     res.render( "check.ejs" );
-// } );
 
-// app.post( "/check", upload.single( "image" ), ( req, res ) =>
-// {
-//     const title = req.body.title;
-//     const price = req.body.price;
-//     const description = req.body.description;
-//     const location = req.body.location;
-//     // const imageURL = req.body.imageURL;
-//     const imageURL =  req.file.path; 
 
-//     const hotel = new Hotel( {
-//         title: title,
-//         price: price,
-//         description: description,
-//         location: location,
-//         imageURL: imageURL
-//     } );
+//API ROUTES
 
-//     hotel.save( ( err ) =>
-//     {
-//         if ( err )
-//         {
-//             console.error( err );
-//             res.send( "An error occurred while saving the hotel information." );
-//         } else
-//         {
-//             res.send( "Hotel information saved successfully." );
-//         }
-//     } );
-// } );
+app.get( "/api/hotels", ( req, res ) =>
+{
+    Hotel.find()
+        .then( ( hotels ) =>
+        {
+            res.json( hotels );
+        } );
+} );
+
+app.get( "/api/hotels/:id", ( req, res ) =>
+{
+    Hotel.findById( req.params.id )
+        .then( ( hotel ) =>
+        {
+            res.json( hotel );
+        } );
+} );
+
+app.get( "/api/hotels/:id/delete/:password", ( req, res ) =>
+{
+    if ( req.params.password === appPassword )
+    {
+        Hotel.findByIdAndDelete( req.params.id )
+            .then( ( hotel ) =>
+            {
+                res.json( { message: "Hotel deleted successfully" } );
+            } );
+    } else
+    {
+        res.status( 401 ).json( { message: "Unauthorized" } );
+    }
+} );
+
+app.post( "/api/hotels/new/", ( req, res ) =>
+{
+    const title = req.body.title;
+    const price = req.body.price;
+    const description = req.body.description;
+    const location = req.body.location;
+    const imageURL = req.body.imageURL;
+    const password = req.body.password;
+
+    if ( password === appPassword )
+    {
+
+        new Hotel( { title: title, price: price, description: description, location: location, imageURL: imageURL } ).save()
+            .then( ( hotel ) =>
+            {
+                res.json( { message: "This hotel is saved.", hotel: hotel } );
+
+            } );
+    } else
+    {
+        res.status( 401 ).json( { message: "Unauthorized" } );
+    }
+} );
+
+
+
+
 
 app.use( ( req, res, next ) =>
 {

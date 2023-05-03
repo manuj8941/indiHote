@@ -1,7 +1,9 @@
 <% layout("boilerplate.ejs")  %>
 
 
-<h1>All Hotels</h1>
+
+<h1>indiHote - Find Your Perfect Stay with Our Hotel API</h1>
+<h3><i>Efficient CRUD Operations with Node.js and MongoDB</i></h3>
 <div><a class="btn btn-info btn-lg col-3 offset-5 my-3" href="/hotels/new">➕ Add A New Hotel</a></div>
 
 
@@ -19,7 +21,7 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h5 class="class"> <%= hotel.title %></h5>
+                <h5 class=""> <%= hotel.title %></h5>
                 <p class="card-text"><%= hotel.description %> </p>
                 <p class="card-text"><small class="text-muted"><%= hotel.location %></small></p>
                 <a href="/hotels/<%= hotel._id %>" class="btn btn-primary">View Hotel</a>
