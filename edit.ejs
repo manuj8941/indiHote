@@ -22,7 +22,7 @@
                 <label class="form-label" for="imageURL">Image URL (*URLs ending with .jpg, .png, .gif)</label>
                 <input class="form-control" type="text" name="imageURL" id="imageURL" value="<%= hotel.imageURL %>"
                     required
-                    pattern="((http(s?):)(\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))|((\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))$"
+                    pattern="((http(s?):)(\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))|((\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))|(https?:\/\/[^\/]*\/[^:]*:[/|.|\w|\s|%|\(|\)|-]*\.(jpg|jpeg|png|gif))"
                     title="Please enter a valid image URL">
                 <div class="valid-feedback">Looks good!</div>
             </div>
