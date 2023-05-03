@@ -21,7 +21,9 @@
             <div class="mb-3">
                 <label class="form-label" for="imageURL">Image URL (*URLs ending with .jpg, .png, .gif)</label>
                 <input class="form-control" type="text" name="imageURL" id="imageURL" value="<%= hotel.imageURL %>"
-                required pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)" title="Please enter a valid image URL">
+                    required
+                    pattern="((http(s?):)(\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))|((\/?)([/|.|\w|\s|%|\(|\)|-])*\.(jpg|jpeg|png|gif))$"
+                    title="Please enter a valid image URL">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
@@ -37,8 +39,8 @@
 
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" name="description" id="description"
-                    rows="5" required><%= hotel.description %></textarea>
+                <textarea class="form-control" type="text" name="description" id="description" rows="5"
+                    required><%= hotel.description %></textarea>
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
@@ -48,7 +50,8 @@
         </form>
 
         <footer>
-            <a class="btn btn-outline-dark btn-lg col-8 offset-2" href="/hotels/<%= hotel._id %> ">🔙 Back To Hotel Without Updating</a>
+            <a class="btn btn-outline-dark btn-lg col-8 offset-2" href="/hotels/<%= hotel._id %> ">🔙 Back To Hotel
+                Without Updating</a>
         </footer>
     </div>
 
