@@ -36,7 +36,7 @@ Hotel.deleteMany( {} )
             const location = `${ cityStatesObject[ locationID ].city }, ${ cityStatesObject[ locationID ].state }`;
             const price = Math.floor( Math.random() * ( 3000 ) + 900 );
             const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan nulla eu urna interdum, eu aliquet elit finibus. Nam malesuada libero id dui laoreet, id iaculis elit lobortis. Duis volutpat, sapien eget luctus finibus, dolor eros rhoncus elit, a varius urna sapien eget nunc. Fusce malesuada tincidunt ipsum, sit amet aliquam ex varius eu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras in tellus vel nisl fermentum vulputate sit amet vel turpis.";
-            const imageURL = `/img%20(${ i + 1 }).jpeg`;
+            const imageURL = `/img%20(${ i + 1 }).jpg`;
           
                        
             new Hotel( { title: title, price: price, description: description, location: location, imageURL: imageURL } ).save()
